@@ -26,9 +26,7 @@
       "esbenp.prettier-vscode",
       "bradlc.vscode-tailwindcss",
       "vivaxy.vscode-conventional-commits",
-      "tamasfe.even-better-toml",
-      "platformio.platformio-ide"
-    ],
-    "unwantedRecommendations": ["ms-vscode.cpptools-extension-pack"]
+      "tamasfe.even-better-toml"
+    ]
   }
 }

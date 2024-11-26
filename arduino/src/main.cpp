@@ -29,6 +29,7 @@ byte CharDegree[8] = {
 };
 
 struct SenzorsValue {
+  unsigned long timeFromBoot;
   float humidity;
   float temperature;
   float pressure;
@@ -62,15 +63,17 @@ SenzorsValue currentValue;
 SenzorsValue senzors_getValue() {
   Serial.println("Reading current values from senzors"); 
 
+  unsigned long time = millis();
   float humi = senz_th.readHumidity();
   float temp = senz_th.readTemperature();
   float pres = senz_p.pascal() + 101325;
 
-  return { humi, temp, pres };
+  return { time, humi, temp, pres };
 }
 
-String senzors_stringifyValue(SenzorsValue val) {
-  return String(val.humidity) + ":" + String(val.temperature) + ":" + String(val.pressure);
+String senzors_stringifyValue(SenzorsValue val, unsigned long time) {
+  return String(time) + ":" + String(val.timeFromBoot) + ":" + String(val.humidity) + ":" + String(val.temperature) + ":" + String(val.pressure);
+  // currentTime:valueTime:humidity:temperature:pressure
 }
 
 
@@ -130,7 +133,7 @@ void display_drawValue(SenzorsValue val) {
 // }
 
 void bt_commandData() {
-  serial_b.print("$data:" + senzors_stringifyValue(currentValue) + ":data;");
+  serial_b.print("$data:" + senzors_stringifyValue(currentValue, millis()) + ":data;");
 }
 
 // void bt_handleCommandInput(String input) {
@@ -167,7 +170,7 @@ void bt_commandData() {
 
 static struct pt pt_display, pt_senzor, pt_bluetooth;
 
-static int protothread_display(struct pt *pt, int interval) {
+static int protothread_display(struct pt *pt, unsigned int interval) {
   static unsigned long timestamp = 0;
   PT_BEGIN(pt);
   while(1) {
@@ -178,7 +181,7 @@ static int protothread_display(struct pt *pt, int interval) {
   PT_END(pt);
 }
 
-static int protothread_senzor(struct pt *pt, int interval) {
+static int protothread_senzor(struct pt *pt, unsigned int interval) {
   static unsigned long timestamp = 0;
   PT_BEGIN(pt);
   while(1) {
@@ -189,7 +192,7 @@ static int protothread_senzor(struct pt *pt, int interval) {
   PT_END(pt);
 }
 
-static int protothread_bluetooth(struct pt *pt, int interval) {
+static int protothread_bluetooth(struct pt *pt, unsigned int interval) {
   static unsigned long timestamp = 0;
   PT_BEGIN(pt);
   while(1) {
@@ -225,5 +228,5 @@ void setup() {
 void loop() {
   protothread_display(&pt_display, 3000);
   protothread_senzor(&pt_senzor, 10000);
-  protothread_bluetooth(&pt_bluetooth, 1000);
+  protothread_bluetooth(&pt_bluetooth, 5000);
 }

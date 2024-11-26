@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `data_value_timestamp_unique` ON `data_value` (`timestamp`);

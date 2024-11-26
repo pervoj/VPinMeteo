@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { cn } from "../utils/cn";
+import { useIconColor } from "../utils/use-icon-color";
 
 export default function DataCard({
   className,
@@ -13,6 +14,8 @@ export default function DataCard({
   value: string;
   icon: LucideIcon;
 }) {
+  const iconColor = useIconColor();
+
   return (
     <View
       className={cn(
@@ -20,10 +23,14 @@ export default function DataCard({
         className,
       )}
     >
-      <Icon color="black" size={72} />
+      <Icon color={iconColor} size={72} />
       <View className="flex-col gap-1">
-        <Text className="text-lg font-bold">{title}</Text>
-        <Text className="text-4xl font-bold">{value}</Text>
+        <Text className="text-lg font-bold text-neutral-950 dark:text-neutral-100">
+          {title}
+        </Text>
+        <Text className="text-4xl font-bold text-neutral-950 dark:text-neutral-100">
+          {value}
+        </Text>
       </View>
     </View>
   );

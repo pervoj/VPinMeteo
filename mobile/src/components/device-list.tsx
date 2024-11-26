@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
-import { Device } from "react-native-ble-plx";
-import {
-  getServiceAndCharacteristic,
-  listenForMessage,
-} from "../utils/bluetooth";
+import { Pressable, Text, View } from "react-native";
+import { Device, DeviceId } from "react-native-ble-plx";
+import { setPairedDevice } from "../utils/pairing";
 import { useBleManager } from "./ble-context";
 
-export default function DeviceList() {
+export default function DeviceList({
+  onPaired,
+}: {
+  onPaired?: (device: DeviceId) => void;
+}) {
   const bleManager = useBleManager();
   const [devices, setDevices] = useState<Record<string, Device>>({});
 
@@ -30,25 +31,8 @@ export default function DeviceList() {
   }, []);
 
   const chooseDevice = useCallback((device: Device) => {
-    Alert.alert("Device", device.id);
-
-    device.connect().then((device) => {
-      device.isConnected().then((connected) => {
-        console.log("\nLoading device", device.id, connected);
-        if (!connected) return;
-
-        getServiceAndCharacteristic(device).then((res) => {
-          listenForMessage(device, res!, (message) => {
-            console.log("Message received", message);
-          });
-
-          device.writeCharacteristicWithoutResponseForService(
-            res!.service,
-            res!.characteristic,
-            btoa("data;"),
-          );
-        });
-      });
+    setPairedDevice(device.id).then(() => {
+      onPaired?.(device.id);
     });
   }, []);
 
@@ -58,10 +42,14 @@ export default function DeviceList() {
         <Pressable
           key={device.id}
           onPress={() => chooseDevice(device)}
-          className="gap-1 rounded-xl border-2 border-black/20 p-2"
+          className="gap-1 rounded-xl border-2 border-black/20 p-2 dark:border-white/30"
         >
-          <Text className="text-lg font-medium">{device.name}</Text>
-          <Text className="text-sm">{device.id}</Text>
+          <Text className="text-lg font-medium text-neutral-950 dark:text-neutral-100">
+            {device.name}
+          </Text>
+          <Text className="text-sm text-neutral-950 dark:text-neutral-100">
+            {device.id}
+          </Text>
         </Pressable>
       ))}
     </View>

@@ -13,7 +13,7 @@ export default function BluetoothState({ children }: { children?: ReactNode }) {
       <Banner variant="info">
         <BannerHeader icon={BluetoothSearching} title="Načítání stavu" />
         <BannerContent>
-          <Text>
+          <Text className="text-neutral-950 dark:text-neutral-100">
             Aplikace se snaží zjistit stav Bluetooth a připojení k zařízení.
           </Text>
         </BannerContent>
@@ -26,7 +26,7 @@ export default function BluetoothState({ children }: { children?: ReactNode }) {
       <Banner variant="error">
         <BannerHeader icon={BluetoothOff} title="Přístup k Bluetooth" />
         <BannerContent>
-          <Text>
+          <Text className="text-neutral-950 dark:text-neutral-100">
             Aplikace nemá povolení k používání Bluetooth nebo zařízení
             nepodporuje Bluetooth.
           </Text>
@@ -40,7 +40,7 @@ export default function BluetoothState({ children }: { children?: ReactNode }) {
       <Banner variant="warning">
         <BannerHeader icon={BluetoothOff} title="Vypnutý Bluetooth" />
         <BannerContent>
-          <Text>
+          <Text className="text-neutral-950 dark:text-neutral-100">
             Bluetooth je vypnutý. Pro pokračování je nutné jej zapnout.
           </Text>
         </BannerContent>

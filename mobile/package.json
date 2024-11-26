@@ -6,13 +6,17 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "babel-plugin-inline-import": "^3.0.0",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.36.4",
     "expo": "~51.0.28",
+    "expo-sqlite": "^15.0.3",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
     "lucide-react-native": "^0.460.0",
@@ -29,6 +33,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
+    "drizzle-kit": "^0.28.1",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "typescript": "^5.1.3"

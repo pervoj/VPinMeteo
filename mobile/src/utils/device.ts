@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
-import { BleError, type Device, type DeviceId } from "react-native-ble-plx";
+import { BleError, type Device } from "react-native-ble-plx";
 import { useBleManager } from "../components/ble-context";
-import { getPairedDevice } from "./pairing";
+import { usePairedDevice } from "./pairing";
 
 export function useDevice() {
   const bleManager = useBleManager();
 
-  const [id, setId] = useState<DeviceId | null | undefined>(undefined);
+  const id = usePairedDevice();
   const [device, setDevice] = useState<Device | undefined>(undefined);
   const [error, setError] = useState<BleError | undefined>(undefined);
 
   const isPaired = id === undefined ? undefined : !!id;
-
-  useEffect(() => {
-    getPairedDevice().then(setId);
-  }, []);
 
   useEffect(() => {
     if (!id || device) return;

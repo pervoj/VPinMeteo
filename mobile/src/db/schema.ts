@@ -1,4 +1,15 @@
-import { index, integer, real, sqliteTable } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  real,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
+
+export const keyval = sqliteTable("keyval", {
+  name: text().primaryKey(),
+  value: text().notNull(),
+});
 
 export const values = sqliteTable(
   "data_value",

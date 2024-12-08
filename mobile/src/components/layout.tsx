@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { LucideIcon } from "lucide-react-native";
-import { ReactNode } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIconColor } from "../utils/use-icon-color";
 
@@ -17,14 +17,21 @@ export default function Layout({
   headerSuffix?: ReactNode;
 }) {
   const iconColor = useIconColor();
+  const headerRef = useRef<View>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>();
+  const screenHeight = useWindowDimensions().height;
   const { top, bottom, left, right } = useSafeAreaInsets();
 
+  useEffect(() => {
+    headerRef.current?.measureInWindow((_, __, ___, h) => {
+      setHeaderHeight(h);
+    });
+  }, []);
+
   return (
-    <View
-      className="flex-1 flex-col"
-      style={{ paddingBottom: bottom, paddingLeft: left, paddingRight: right }}
-    >
+    <View className="flex-1 flex-col" style={{ height: screenHeight }}>
       <View
+        ref={headerRef}
         style={{ paddingTop: top }}
         className="border-b-2 border-black/10 bg-black/5 dark:border-white/5 dark:bg-white/10"
       >
@@ -43,8 +50,18 @@ export default function Layout({
           </View>
         </View>
       </View>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View className="flex-1 gap-6 p-6">{children}</View>
+      <ScrollView
+        style={{
+          flex: 1,
+          height: headerHeight ? screenHeight - headerHeight : undefined,
+        }}
+        contentContainerStyle={{
+          paddingBottom: bottom,
+          paddingLeft: left,
+          paddingRight: right,
+        }}
+      >
+        <View className="gap-4 p-6">{children}</View>
       </ScrollView>
       <StatusBar style="auto" />
     </View>

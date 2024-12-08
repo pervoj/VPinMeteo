@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { Device, DeviceId } from "react-native-ble-plx";
+import { Device } from "react-native-ble-plx";
 import { setPairedDevice } from "../utils/pairing";
 import { useBleManager } from "./ble-context";
 
-export default function DeviceList({
-  onPaired,
-}: {
-  onPaired?: (device: DeviceId) => void;
-}) {
+export default function DeviceList() {
   const bleManager = useBleManager();
   const [devices, setDevices] = useState<Record<string, Device>>({});
 
@@ -31,9 +27,7 @@ export default function DeviceList({
   }, []);
 
   const chooseDevice = useCallback((device: Device) => {
-    setPairedDevice(device.id).then(() => {
-      onPaired?.(device.id);
-    });
+    setPairedDevice(device.id);
   }, []);
 
   return (

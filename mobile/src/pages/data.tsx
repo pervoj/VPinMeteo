@@ -1,22 +1,18 @@
-import { desc, eq } from "drizzle-orm";
-import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import {
   Droplets,
   Home,
   Thermometer,
   WindArrowDown,
 } from "lucide-react-native";
-import { useCallback, useEffect } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { State } from "react-native-ble-plx";
 import { useBleState } from "../components/ble-context";
 import BluetoothState from "../components/bluetooth-state";
 import DataCard from "../components/data-card";
 import Layout from "../components/layout";
-import { db } from "../db";
-import { values } from "../db/schema";
-import { listenForCommand } from "../utils/bluetooth";
 import { useDevice } from "../utils/device";
+import { useCurrentData } from "../utils/use-current-data";
+import { useDataListener } from "../utils/use-data-listener";
 import { useIconColor } from "../utils/use-icon-color";
 
 export default function DataPage() {
@@ -24,43 +20,8 @@ export default function DataPage() {
   const state = useBleState();
   const { device } = useDevice();
 
-  const { data } = useLiveQuery(
-    db.query.values.findFirst({
-      orderBy: desc(values.timestamp),
-    }),
-  );
-
-  const cb: Parameters<typeof listenForCommand>[1] = useCallback(
-    async ({ command, data }) => {
-      if (command != "data") return;
-      const dataValues = data!.map(parseFloat);
-
-      const valueAge = dataValues[0] - dataValues[1];
-      const timestamp = Date.now() - valueAge;
-      const date = new Date(timestamp);
-      date.setMilliseconds(0);
-
-      const items = await db
-        .select({ id: values.id })
-        .from(values)
-        .where(eq(values.timestamp, date));
-
-      if (items.length) return;
-
-      await db.insert(values).values({
-        humidity: dataValues[2],
-        temperature: dataValues[3],
-        pressure: dataValues[4],
-        timestamp: date,
-      });
-    },
-    [],
-  );
-
-  useEffect(() => {
-    if (!device) return;
-    listenForCommand(device, cb);
-  }, [device]);
+  useDataListener(device);
+  const data = useCurrentData();
 
   function formatNumber(value: number) {
     return value.toLocaleString("cs-CZ", {

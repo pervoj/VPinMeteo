@@ -1,4 +1,10 @@
-import { Device, Service } from "react-native-ble-plx";
+import { BleManager, Device, DeviceId, Service } from "react-native-ble-plx";
+
+export async function connectToDevice(manager: BleManager, device: DeviceId) {
+  const connected = await manager.devices([device]);
+  if (connected.length) return connected[0];
+  return await manager.connectToDevice(device);
+}
 
 export async function getCharacteristics(service: Service) {
   return (await service.characteristics())

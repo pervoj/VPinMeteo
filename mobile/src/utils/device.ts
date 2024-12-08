@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BleError, type Device } from "react-native-ble-plx";
 import { useBleManager } from "../components/ble-context";
+import { connectToDevice } from "./bluetooth";
 import { usePairedDevice } from "./pairing";
 
 export function useDevice() {
@@ -14,13 +15,13 @@ export function useDevice() {
 
   useEffect(() => {
     if (!id || device) return;
-    bleManager
-      .connectToDevice(id)
+    connectToDevice(bleManager, id)
       .then((device) => {
         setError(undefined);
         setDevice(device);
       })
       .catch((error) => {
+        console.log(id, device, error);
         setError(error);
         setDevice(undefined);
       });

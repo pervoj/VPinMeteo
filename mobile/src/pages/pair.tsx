@@ -1,15 +1,10 @@
 import { Bluetooth } from "lucide-react-native";
 import { Text } from "react-native";
-import { DeviceId } from "react-native-ble-plx";
 import BluetoothState from "../components/bluetooth-state";
 import DeviceList from "../components/device-list";
 import Layout from "../components/layout";
 
-export default function PairPage({
-  onPaired,
-}: {
-  onPaired?: (device: DeviceId) => void;
-}) {
+export default function PairPage() {
   return (
     <Layout title="Párování" icon={Bluetooth}>
       <Text className="text-lg leading-normal text-neutral-950 dark:text-neutral-100">
@@ -18,7 +13,7 @@ export default function PairPage({
       </Text>
 
       <BluetoothState>
-        <DeviceList onPaired={onPaired} />
+        <DeviceList />
       </BluetoothState>
     </Layout>
   );

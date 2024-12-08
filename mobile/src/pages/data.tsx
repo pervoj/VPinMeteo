@@ -10,6 +10,7 @@ import { useBleState } from "../components/ble-context";
 import BluetoothState from "../components/bluetooth-state";
 import DataCard from "../components/data-card";
 import Layout from "../components/layout";
+import Stats from "../components/stats";
 import { useDevice } from "../utils/device";
 import { useCurrentData } from "../utils/use-current-data";
 import { useDataListener } from "../utils/use-data-listener";
@@ -34,15 +35,16 @@ export default function DataPage() {
       title="Domů"
       icon={Home}
       headerSuffix={
-        state == State.PoweredOn &&
-        (!device || !data) && (
-          <View className="flex-row items-center justify-center gap-2">
-            <ActivityIndicator color={iconColor} />
-            <Text className="text-neutral-950 dark:text-neutral-100">
-              {!device ? "Připojování" : "Načítání"}
-            </Text>
-          </View>
-        )
+        <>
+          {state == State.PoweredOn && (!device || !data) && (
+            <View className="flex-row items-center justify-center gap-2">
+              <ActivityIndicator color={iconColor} />
+              <Text className="text-neutral-950 dark:text-neutral-100">
+                {!device ? "Připojování" : "Načítání"}
+              </Text>
+            </View>
+          )}
+        </>
       }
     >
       <BluetoothState>
@@ -72,6 +74,7 @@ export default function DataPage() {
           </View>
         )}
       </BluetoothState>
+      <Stats />
     </Layout>
   );
 }

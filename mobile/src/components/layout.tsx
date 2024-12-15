@@ -57,7 +57,7 @@ export default function Layout({
       >
         <View className="gap-4 p-6">{children}</View>
       </ScrollView>
-      <StatusBar style="auto" />
+      <StatusBar style="inverted" />
     </View>
   );
 }

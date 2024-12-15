@@ -39,7 +39,7 @@ export default function Stats() {
         count={60}
       />
       <ChartGroup
-        subtitle="poslední 1 h"
+        subtitle="poslední 1 den"
         width={width}
         data={data}
         currentDate={currentDate}

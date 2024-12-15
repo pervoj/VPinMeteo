@@ -36,14 +36,10 @@ export default function DeviceList() {
         <Pressable
           key={device.id}
           onPress={() => chooseDevice(device)}
-          className="gap-1 rounded-xl border-2 border-black/20 p-2 dark:border-white/30"
+          className="gap-1 rounded-xl border-2 border-black/20 p-2"
         >
-          <Text className="text-lg font-medium text-neutral-950 dark:text-neutral-100">
-            {device.name}
-          </Text>
-          <Text className="text-sm text-neutral-950 dark:text-neutral-100">
-            {device.id}
-          </Text>
+          <Text className="text-lg font-medium">{device.name}</Text>
+          <Text className="text-sm">{device.id}</Text>
         </Pressable>
       ))}
     </View>

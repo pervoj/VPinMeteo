@@ -6,7 +6,7 @@ import WrapperPage from "./pages/wrapper";
 
 export default function App() {
   return (
-    <View className="flex-1 bg-neutral-100 dark:bg-neutral-900">
+    <View className="flex-1">
       <SafeAreaProvider>
         <MigrationsLoader>
           <BleProvider>

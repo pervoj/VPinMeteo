@@ -3,7 +3,6 @@ import { LucideIcon } from "lucide-react-native";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useIconColor } from "../utils/use-icon-color";
 
 export default function Layout({
   title,
@@ -16,7 +15,6 @@ export default function Layout({
   children?: ReactNode;
   headerSuffix?: ReactNode;
 }) {
-  const iconColor = useIconColor();
   const headerRef = useRef<View>(null);
   const [headerHeight, setHeaderHeight] = useState<number>();
   const screenHeight = useWindowDimensions().height;
@@ -33,17 +31,13 @@ export default function Layout({
       <View
         ref={headerRef}
         style={{ paddingTop: top }}
-        className="border-b-2 border-black/10 bg-black/5 dark:border-white/5 dark:bg-white/10"
+        className="border-b-2 border-black/10 bg-black/5"
       >
         <View className="flex-row items-center gap-1 px-6 py-4">
-          <Icon size={32} color={iconColor} />
+          <Icon size={32} color="black" />
           <View className="flex-col gap-0.5">
-            <Text className="text-xs leading-none text-neutral-950 dark:text-neutral-100">
-              VPinMeteo
-            </Text>
-            <Text className="text-3xl font-bold leading-none text-neutral-950 dark:text-neutral-100">
-              {title}
-            </Text>
+            <Text className="text-xs leading-none">VPinMeteo</Text>
+            <Text className="text-3xl font-bold leading-none">{title}</Text>
           </View>
           <View className="ms-auto flex-row items-center gap-1">
             {headerSuffix}

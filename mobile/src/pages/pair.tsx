@@ -7,7 +7,7 @@ import Layout from "../components/layout";
 export default function PairPage() {
   return (
     <Layout title="Párování" icon={Bluetooth}>
-      <Text className="text-lg leading-normal text-neutral-950 dark:text-neutral-100">
+      <Text className="text-lg leading-normal">
         Pro používání aplikace je nutné ji nejdříve spárovat se zařízením{" "}
         <Text className="font-bold">VPinMeteo</Text>. Vyberte zařízení níže.
       </Text>

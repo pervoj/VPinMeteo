@@ -3,11 +3,8 @@ import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { LineChart } from "react-native-charts-wrapper";
 import { db } from "../db";
 import { values } from "../db/schema";
-import { useIconColor } from "../utils/use-icon-color";
 
 export default function Stats() {
-  const color = useIconColor();
-
   const { data } = useLiveQuery(
     db.query.values.findMany({
       where: gte(values.timestamp, new Date(Date.now() - 1000 * 60 * 60 * 24)),
